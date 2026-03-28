@@ -249,8 +249,13 @@
                     <span class="slide-caption" data-swiper-parallax="150" data-swiper-parallax-opacity="0.5">Massive Manifestor</span>
                   </div>
                   <div class="swiper-slide">
-                    <div class="slide-image swiper-image-2">
-                      <div class="color-layer color-layer-gradient"></div>
+                    <div class="slide-image swiper-image-2" style="background-image: none;">
+                      <video id="slide-video-2" autoplay muted loop playsinline preload="auto"
+                        poster="https://res.cloudinary.com/dyqlkc3ri/image/upload/v1668281469/1440x900-bg-main-1_dcbaxg.jpg"
+                        style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0;">
+                        <source src="https://res.cloudinary.com/dyqlkc3ri/video/upload/c_scale,w_1200/v1668281459/space_dpvxfy.mp4" type="video/mp4">
+                      </video>
+                      <div class="color-layer color-layer-gradient" style="z-index:1;"></div>
                     </div>
                     <span class="slide-caption" data-swiper-parallax="150" data-swiper-parallax-opacity="0.5">Innovative</span>
                   </div>
@@ -267,8 +272,13 @@
                     <span class="slide-caption" data-swiper-parallax="150" data-swiper-parallax-opacity="0.5">Creative</span>
                   </div>
                   <div class="swiper-slide">
-                    <div class="slide-image swiper-image-5">
-                      <div class="color-layer color-layer-black"></div>
+                    <div class="slide-image swiper-image-5" style="background-image: none;">
+                      <video id="slide-video-5" autoplay muted loop playsinline preload="auto"
+                        poster="https://res.cloudinary.com/dyqlkc3ri/image/upload/v1668281482/1920x1080-2_lj7dka.jpg"
+                        style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0;">
+                        <source src="https://res.cloudinary.com/dyqlkc3ri/video/upload/v1667604298/global_nrso7j.mp4" type="video/mp4">
+                      </video>
+                      <div class="color-layer color-layer-black" style="z-index:1;"></div>
                     </div>
                     <span class="slide-caption" data-swiper-parallax="150" data-swiper-parallax-opacity="0.5">New Era</span>
                   </div>
@@ -581,7 +591,7 @@
                               </div>
                               <div class="col-12 col-md-6 contact-data__item">
                                 <h5>Email</h5>
-                                <p><a href="mailto:support@imminentflair.com?subject=Message%20from%20your%20site" class="link-s">support@imminentflair.com</a></p>
+                                <p><a href="/cdn-cgi/l/email-protection#93e0e6e3e3fce1e7d3fafefefafdf6fde7f5fff2fae1bdf0fcfeace0e6f1f9f6f0e7aedef6e0e0f2f4f6b6a1a3f5e1fcfeb6a1a3eafce6e1b6a1a3e0fae7f6" class="link-s"><span class="__cf_email__" data-cfemail="295a5c5959465b5d6940444440474c475d4f4548405b074a4644">[email&#160;protected]</span></a></p>
                               </div>
                             </div>
                           </div>
@@ -696,14 +706,51 @@
     <div class="cursor"></div>
 
     <!-- Load Scripts Start -->
-    <script src="js/libs.min.js"></script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="js/libs.min.js"></script>
     <script src="js/gallery-init.js"></script>
     <script src="js/beldon-custom.js"></script>
     <!-- FIX: map-dark.js must load BEFORE the Maps API so initMap is defined when the API calls it -->
     <script src="js/maps/map-dark.js"></script>
     <!-- FIX: added callback=initMap and loading=async for proper async initialization -->
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDNMDtmEsvSevM4ztfsbhLfLNZhKHCvWXk&callback=initMap"></script>
-    <!-- Load Scripts End -->
+
+    <!-- Video Autoplay Enforcement -->
+    <script>
+      (function() {
+        var videoIds = ['slide-video-2', 'slide-video-5'];
+
+        function forcePlay(id) {
+          var v = document.getElementById(id);
+          if (!v) return;
+          v.muted = true;
+          var p = v.play();
+          if (p !== undefined) {
+            p.catch(function() {
+              document.addEventListener('click', function retry() {
+                v.play();
+                document.removeEventListener('click', retry);
+              }, { once: true });
+            });
+          }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+          videoIds.forEach(forcePlay);
+
+          // Re-trigger play when Swiper navigates to a video slide
+          var checkSwiper = setInterval(function() {
+            var swiperEl = document.querySelector('.swiper-2');
+            if (swiperEl && swiperEl.swiper) {
+              clearInterval(checkSwiper);
+              swiperEl.swiper.on('slideChange', function() {
+                videoIds.forEach(forcePlay);
+              });
+            }
+          }, 300);
+        });
+      })();
+    </script>
+    <!-- Video Autoplay Enforcement End -->
 
   </body>
 </html>
